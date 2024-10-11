@@ -6,17 +6,19 @@ import UserInput from "./components/UserInput.jsx";
 
 function App() {
   const [userInput, SetUserInput] = useState({
-    initialInvestment: 10000,
+    initialInvestment: 15000,
     annualInvestment: 1200,
     expectedReturn: 6,
     duration: 10,
   });
 
+  const inputIsValid = userInput.duration >= 1;
+
   function handdleChange(inputIdentifier, newValue) {
     SetUserInput((prevuserInput) => {
       return {
         ...prevuserInput,
-        [inputIdentifier]: newValue,
+        [inputIdentifier]: +newValue,
       };
     });
   }
@@ -25,7 +27,10 @@ function App() {
     <>
       <Header />
       <UserInput onChangeInput={handdleChange} userInput={userInput} />
-      <Results input={userInput} />
+      {!inputIsValid && (
+        <p className="center">Please enter a duration greater than zero.</p>
+      )}
+      {inputIsValid && <Results input={userInput} />}
     </>
   );
 }
